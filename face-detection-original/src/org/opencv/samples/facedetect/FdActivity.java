@@ -64,6 +64,8 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     private int                    mAbsoluteFaceSize   = 0;
 
     private CameraBridgeViewBase   mOpenCvCameraView;
+    
+ 
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -78,10 +80,23 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
                     try {
                         // load cascade file from application resources
-                        InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
-                        File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
-                        mCascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");
+                    	InputStream is = null;
+                    	File cascadeDir = null;
+                    	if(getIntent().getStringExtra("xmlfile").equals("lbpcascade_frontalface.xml"))
+                    	{
+	                         is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
+	                        cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+	                        mCascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");
+                    	}
+                    	else if(getIntent().getStringExtra("xmlfile").equals("headandshoulders.xml"))
+                    	{
+                    		 is = getResources().openRawResource(R.raw.headandshoulders);
+	                         cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+	                        mCascadeFile = new File(cascadeDir, "headandshoulders.xml");
+                    	}
+                    	
                         FileOutputStream os = new FileOutputStream(mCascadeFile);
+                    	
 
                         byte[] buffer = new byte[4096];
                         int bytesRead;

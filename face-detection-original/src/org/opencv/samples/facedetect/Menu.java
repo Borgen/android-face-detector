@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class Menu extends Activity {
@@ -12,15 +13,21 @@ public class Menu extends Activity {
 	
 	String count = "0";
 	TextView textView;
+	String xmlfile ="lbpcascade_frontalface.xml";
+	Intent mainIntent;
+	
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
         
+        
         textView = (TextView) findViewById(R.id.textView1);
         textView.setText("Faces counted: " + count);
         Log.w("MENU", "ON CREATE");
+        
+        mainIntent = new Intent(Menu.this, FdActivity.class);
         
        
     }
@@ -28,8 +35,32 @@ public class Menu extends Activity {
     
     public void button1_OnClick(View v)
     {
-    	Intent mainIntent = new Intent(Menu.this, FdActivity.class);
+    	//Intent mainIntent = new Intent(Menu.this, FdActivity.class);
         Menu.this.startActivityForResult(mainIntent, 1);
+        Log.i("BUTTON", "BUTTON CLICKED");
+    }
+    
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        
+        switch(view.getId()) {
+            case R.id.faceradio:
+                if (checked)
+                {
+                	mainIntent.putExtra("xmlfile","lbpcascade_frontalface.xml");
+                	Log.i("radiobutton", "FACE FACE FACE");
+                	break;
+                }
+            case R.id.headradio:
+                if (checked)
+                {
+                	mainIntent.putExtra("xmlfile","headandshoulders.xml");
+                	Log.i("radiobutton", "HEAD HEAD HEAD");
+                	break;
+                }
+                    
+                
+        }
     }
     
     @Override
